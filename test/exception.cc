@@ -10,12 +10,12 @@ struct NoDefaultConstructor_ {
 
 consteval void test_optional() noexcept {
     constexpr auto x = optional<int>{1};
-    constexpr auto y = optional<int>{nullopt};
+    constexpr auto y = optional<int>{nullopt_t{}};
     static_assert(x.has_value() == true);
     static_assert(y.has_value() == false);
     static_assert(x.value() == 1);
     static_assert(y.value_or(1) == 1);
-    constexpr auto _7 = optional<NoDefaultConstructor_>{nullopt};
+    constexpr auto _7 = optional<NoDefaultConstructor_>{nullopt_t{}};
     static_assert(_7.has_value() == false);
 }
 
@@ -38,7 +38,7 @@ inline void test_optional_in_runtime() noexcept {
     auto x = optional<int>{1};
     x = 2;
     assert_true(x.value() == 2);
-    x = nullopt;
+    x = nullopt_t{};
     assert_true(x.has_value() == false);
     // has_value(x) = false; // this should be error
 }
