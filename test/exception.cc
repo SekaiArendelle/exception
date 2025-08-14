@@ -1,4 +1,4 @@
-#include <exception/exception.hh>
+import exception;
 
 using namespace exception;
 
