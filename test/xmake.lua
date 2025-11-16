@@ -13,6 +13,7 @@ add_includedirs("$(projectdir)/../include")
 for _, file in ipairs(os.files("*.cc")) do
     local name = path.basename(file)
     target(name, function ()
+        set_policy("build.c++.modules.std", false)
         set_symbols("debug")
         set_kind("binary")
         set_exceptions("cxx")
