@@ -2,7 +2,7 @@
 
 /**
  * @file exception.hh
- * @details https://github.com/GoodenoughPhysicsLab/exception.git
+ * @details https://github.com/SekaiArendelle/exception.git
  */
 
 #include <memory>
