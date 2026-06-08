@@ -23,8 +23,12 @@ namespace exception {
 [[noreturn]]
 inline void terminate() noexcept {
     // https://llvm.org/doxygen/Compiler_8h_source.html
-#if defined(__has_builtin) && __has_builtin(__builtin_trap)
+#if defined(__has_builtin)
+#if __has_builtin(__builtin_trap)
     __builtin_trap();
+#else
+    ::std::terminate();
+#endif
 #else
     ::std::terminate();
 #endif
@@ -37,8 +41,12 @@ template<bool ndebug = false>
 [[noreturn]]
 inline void unreachable() noexcept {
     if constexpr (ndebug) {
-#if defined(__has_builtin) && __has_builtin(__builtin_unreachable)
+#if defined(__has_builtin)
+#if __has_builtin(__builtin_unreachable)
         __builtin_unreachable();
+#else
+        ::std::unreachable();
+#endif
 #else
         ::std::unreachable();
 #endif
