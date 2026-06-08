@@ -322,13 +322,37 @@ public:
         }
         return ::std::move(this->ok_);
     }
+
+    constexpr bool operator==(this expected const& self, expected const& rhs) noexcept
+        requires (::std::equality_comparable<Ok> && ::std::equality_comparable<Fail>)
+    {
+        if (self.has_value() != rhs.has_value()) {
+            return false;
+        }
+        if (self.has_value()) {
+            return self.ok_ == rhs.ok_;
+        }
+        return self.fail_ == rhs.fail_;
+    }
+
+    constexpr bool operator==(this expected const& self, value_type const& rhs) noexcept
+        requires ::std::equality_comparable<Ok>
+    {
+        return self.has_value() && self.ok_ == rhs;
+    }
+
+    constexpr bool operator==(this expected const& self, unexpected<Fail> const& rhs) noexcept
+        requires ::std::equality_comparable<Fail>
+    {
+        return !self.has_value() && self.fail_ == rhs.val_;
+    }
 };
 
 namespace details {
 
 struct nullopt_t_ {};
 
-}
+} // namespace details
 
 template<typename T>
 using optional = ::exception::expected<T, ::exception::details::nullopt_t_>;

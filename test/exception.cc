@@ -32,6 +32,32 @@ consteval void test_expected() noexcept {
     static_assert(x.value_or(2) == 1);
     static_assert(y.value_or(2) == 2);
     // static_assert(y.value_or(2.5) == 2); // error, implicit conversion is not allowed
+
+    // operator==
+    static_assert((x == expected<int, int>{1}) == true);
+    static_assert((x == expected<int, int>{2}) == false);
+    static_assert((y == expected<int, int>{::exception::unexpected{1}}) == true);
+    static_assert((y == expected<int, int>{::exception::unexpected{2}}) == false);
+    static_assert((x == expected<int, int>{::exception::unexpected{1}}) == false);
+    static_assert((y == expected<int, int>{1}) == false);
+    static_assert((x == 1) == true);
+    static_assert((x == 2) == false);
+    static_assert((y == ::exception::unexpected{1}) == true);
+    static_assert((y == ::exception::unexpected{2}) == false);
+    // C++20 rewritten / reversed candidates
+    static_assert((1 == x) == true);
+    static_assert((2 == x) == false);
+    static_assert((::exception::unexpected{1} == y) == true);
+    static_assert((::exception::unexpected{2} == y) == false);
+    // operator!=
+    static_assert((x != expected<int, int>{2}) == true);
+    static_assert((x != expected<int, int>{1}) == false);
+    static_assert((x != 1) == false);
+    static_assert((x != 2) == true);
+    static_assert((y != ::exception::unexpected{1}) == false);
+    static_assert((y != ::exception::unexpected{2}) == true);
+    static_assert((1 != x) == false);
+    static_assert((::exception::unexpected{1} != y) == false);
 }
 
 inline void test_optional_in_runtime() noexcept {
