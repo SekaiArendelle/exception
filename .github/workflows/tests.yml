@@ -1,0 +1,19 @@
+name: Tests
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - "**/*.md"
+  pull_request:
+    branches: [ main ]
+    paths-ignore:
+      - "**/*.md"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and test in Docker
+        run: docker build -f tests/docker/x86_64-linux-gnu/Dockerfile .
