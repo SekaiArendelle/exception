@@ -6,7 +6,7 @@ enable_testing()
 file(GLOB test_sources *.cc)
 foreach(test_file ${test_sources})
   get_filename_component(test_name ${test_file} NAME_WE)
-  add_executable(${test_name} EXCLUDE_FROM_ALL ${test_file})
+  add_executable(${test_name} ${test_file})
   target_sources(${test_name} PRIVATE
     FILE_SET CXX_MODULES
     BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/../include
