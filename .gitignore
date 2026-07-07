@@ -1,5 +1,4 @@
 build/
 .vscode/
-.xmake/
-*.ignore.*
+*.ignore*
 *.lnk
