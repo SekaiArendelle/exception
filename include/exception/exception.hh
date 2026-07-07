@@ -24,11 +24,11 @@ namespace exception {
 inline void terminate() noexcept {
     // https://llvm.org/doxygen/Compiler_8h_source.html
 #if defined(__has_builtin)
-#if __has_builtin(__builtin_trap)
+    #if __has_builtin(__builtin_trap)
     __builtin_trap();
-#else
+    #else
     ::std::terminate();
-#endif
+    #endif
 #else
     ::std::terminate();
 #endif
@@ -42,11 +42,11 @@ template<bool ndebug = false>
 inline void unreachable() noexcept {
     if constexpr (ndebug) {
 #if defined(__has_builtin)
-#if __has_builtin(__builtin_unreachable)
+    #if __has_builtin(__builtin_unreachable)
         __builtin_unreachable();
-#else
+    #else
         ::std::unreachable();
-#endif
+    #endif
 #else
         ::std::unreachable();
 #endif
@@ -95,6 +95,22 @@ constexpr bool is_unexpected_v<::exception::unexpected<T>> = true;
 
 template<typename T>
 concept is_unexpected = ::exception::details::is_unexpected_v<::std::remove_cvref_t<T>>;
+
+template<typename Ok, typename Fail>
+class expected;
+
+namespace details {
+
+struct nullopt_t_ {
+    constexpr bool operator==(this nullopt_t_ const&, nullopt_t_ const&) noexcept = default;
+};
+
+} // namespace details
+
+template<typename T>
+using optional = ::exception::expected<T, ::exception::details::nullopt_t_>;
+
+using nullopt_t = ::exception::unexpected<::exception::details::nullopt_t_>;
 
 template<typename Ok, typename Fail>
 class expected {
@@ -180,6 +196,12 @@ public:
         } else {
             ::std::destroy_at(::std::addressof(this->fail_));
         }
+    }
+
+    static constexpr auto none() noexcept -> ::exception::expected<Ok, Fail>
+        requires (::std::same_as<Fail, ::exception::details::nullopt_t_>)
+    {
+        return ::exception::unexpected<::exception::details::nullopt_t_>{};
     }
 
     template<typename T>
@@ -355,19 +377,6 @@ public:
         return !self.has_value() && self.fail_ == rhs.val_;
     }
 };
-
-namespace details {
-
-struct nullopt_t_ {
-    constexpr bool operator==(this nullopt_t_ const&, nullopt_t_ const&) noexcept = default;
-};
-
-} // namespace details
-
-template<typename T>
-using optional = ::exception::expected<T, ::exception::details::nullopt_t_>;
-
-using nullopt_t = ::exception::unexpected<::exception::details::nullopt_t_>;
 
 namespace details {
 
