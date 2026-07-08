@@ -4,11 +4,8 @@ module;
 
 /**
  * @file exception.cppm
- * @details https://github.com/GoodenoughPhysicsLab/exception.git
+ * @details https://github.com/SekaiArendelle/exception.git
  * @note experimental support for C++20 module
- *       requires clang22+
- *       MSVC has bug with deducing this
- *       gcc has bug with std::construct_at
  */
 
 export module exception;
