@@ -1,6 +1,6 @@
 module;
 
-#include "exception.hh"
+#include <exception/exception.hh>
 
 /**
  * @file exception.cppm

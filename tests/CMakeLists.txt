@@ -9,8 +9,8 @@ foreach(test_file ${test_sources})
   add_executable(${test_name} ${test_file})
   target_sources(${test_name} PRIVATE
     FILE_SET CXX_MODULES
-    BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/../include
-    FILES ${CMAKE_CURRENT_SOURCE_DIR}/../include/exception/exception.cppm)
+    BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/../share/exception
+    FILES ${CMAKE_CURRENT_SOURCE_DIR}/../share/exception/exception.cppm)
   target_include_directories(${test_name} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../include)
   target_compile_features(${test_name} PRIVATE cxx_std_23)
 

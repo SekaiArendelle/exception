@@ -94,7 +94,7 @@ constexpr bool is_unexpected_v<::exception::unexpected<T>> = true;
 } // namespace details
 
 template<typename T>
-concept is_unexpected = ::exception::details::is_unexpected_v<::std::remove_cvref_t<T>>;
+concept is_unexpected = details::is_unexpected_v<::std::remove_cvref_t<T>>;
 
 template<typename Ok, typename Fail>
 class expected;
@@ -108,9 +108,9 @@ struct nullopt_t_ {
 } // namespace details
 
 template<typename T>
-using optional = ::exception::expected<T, ::exception::details::nullopt_t_>;
+using optional = ::exception::expected<T, details::nullopt_t_>;
 
-using nullopt_t = ::exception::unexpected<::exception::details::nullopt_t_>;
+using nullopt_t = ::exception::unexpected<details::nullopt_t_>;
 
 template<typename Ok, typename Fail>
 class expected {
@@ -198,16 +198,16 @@ public:
         }
     }
 
-    static constexpr auto none() noexcept -> ::exception::expected<Ok, Fail>
-        requires (::std::same_as<Fail, ::exception::details::nullopt_t_>)
+    static constexpr auto none() noexcept -> expected<Ok, Fail>
+        requires (::std::same_as<Fail, details::nullopt_t_>)
     {
-        return ::exception::unexpected<::exception::details::nullopt_t_>{};
+        return ::exception::unexpected<details::nullopt_t_>{};
     }
 
     template<typename T>
         requires (::std::same_as<::std::remove_cvref_t<T>, Ok> &&
                   (::std::is_copy_assignable_v<T> || ::std::is_move_assignable_v<T>))
-    constexpr auto&& operator=(this ::exception::expected<Ok, Fail>& self, T&& ok) noexcept {
+    constexpr auto&& operator=(this expected<Ok, Fail>& self, T&& ok) noexcept {
         if (self.has_value()) {
             self.ok_ = ::std::forward<T>(ok);
         } else {
@@ -219,21 +219,20 @@ public:
     }
 
     template<::exception::is_unexpected T>
-    constexpr auto&& operator=(this ::exception::expected<Ok, Fail>& self, T const& fail) noexcept {
+    constexpr auto&& operator=(this expected<Ok, Fail>& self, T const& fail) noexcept {
         self.has_value_ = false;
         self.fail_ = fail.val_;
         return self;
     }
 
     template<::exception::is_unexpected T>
-    constexpr auto&& operator=(this ::exception::expected<Ok, Fail>& self, T&& fail) noexcept {
+    constexpr auto&& operator=(this expected<Ok, Fail>& self, T&& fail) noexcept {
         self.has_value_ = false;
         self.fail_ = ::std::move(fail.val_);
         return self;
     }
 
-    constexpr auto&& operator=(this ::exception::expected<Ok, Fail>& self,
-                               ::exception::expected<Ok, Fail> const& other) noexcept {
+    constexpr auto&& operator=(this expected<Ok, Fail>& self, ::exception::expected<Ok, Fail> const& other) noexcept {
         ::exception::expected<Ok, Fail> tmp(other);
         tmp.swap(self);
         return self;
@@ -395,9 +394,9 @@ constexpr bool is_optional_<optional<T>> = true;
 } // namespace details
 
 template<typename T>
-concept is_expected = ::exception::details::is_expected_<::std::remove_cvref_t<T>>;
+concept is_expected = details::is_expected_<::std::remove_cvref_t<T>>;
 
 template<typename T>
-concept is_optional = ::exception::details::is_optional_<::std::remove_cvref_t<T>>;
+concept is_optional = details::is_optional_<::std::remove_cvref_t<T>>;
 
 } // namespace exception
