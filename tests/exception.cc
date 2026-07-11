@@ -65,6 +65,11 @@ consteval void test_none() noexcept {
     static_assert(x.has_value() == false);
 }
 
+consteval void test_nullopt() noexcept {
+    constexpr auto x = optional<int>{nullopt};
+    static_assert(x.has_value() == false);
+}
+
 inline void test_optional_in_runtime() noexcept {
     auto x = optional<int>{1};
     x = 2;

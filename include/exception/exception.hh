@@ -112,6 +112,8 @@ using optional = ::exception::expected<T, details::nullopt_t_>;
 
 using nullopt_t = ::exception::unexpected<details::nullopt_t_>;
 
+inline constexpr auto nullopt = nullopt_t{};
+
 template<typename Ok, typename Fail>
 class expected {
     static_assert(!::std::is_reference_v<Ok>);

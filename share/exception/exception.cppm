@@ -19,6 +19,7 @@ using ::exception::is_expected;
 using ::exception::is_optional;
 using ::exception::is_unexpected;
 using ::exception::nullopt_t;
+using ::exception::nullopt;
 using ::exception::optional;
 using ::exception::terminate;
 using ::exception::unexpected;
