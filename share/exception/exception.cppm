@@ -1,12 +1,12 @@
-module;
-
-#include <exception/exception.hh>
-
 /**
  * @file exception.cppm
  * @details https://github.com/SekaiArendelle/exception.git
  * @note experimental support for C++20 module
  */
+
+module;
+
+#include <exception/exception.hh>
 
 export module exception;
 
