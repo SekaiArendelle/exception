@@ -60,11 +60,6 @@ consteval void test_expected() noexcept {
     static_assert((::exception::unexpected{1} != y) == false);
 }
 
-consteval void test_none() noexcept {
-    constexpr auto x = optional<int>::none();
-    static_assert(x.has_value() == false);
-}
-
 consteval void test_nullopt() noexcept {
     constexpr auto x = optional<int>{nullopt};
     static_assert(x.has_value() == false);

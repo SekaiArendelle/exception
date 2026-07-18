@@ -200,12 +200,6 @@ public:
         }
     }
 
-    static constexpr auto none() noexcept -> expected<Ok, Fail>
-        requires (::std::same_as<Fail, details::nullopt_t_>)
-    {
-        return ::exception::unexpected<details::nullopt_t_>{};
-    }
-
     template<typename T>
         requires (::std::same_as<::std::remove_cvref_t<T>, Ok> &&
                   (::std::is_copy_assignable_v<T> || ::std::is_move_assignable_v<T>))
